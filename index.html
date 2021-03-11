@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <script src="/jquery/jquery.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <!-- <script src="/socket.io-stream.js"></script> -->
+
+  <body>
+    <!-- Browser JavaScript -->
+    <h1>Image</h1>
+    <h4 id="serverStatusText">Server Off Line!</h4>
+    <img id="img" width="40%" />
+    <img id="img2" width="40%" />
+  </body>
+  <script>
+    function b64(e) {
+      var t = '';
+      var n = new Uint8Array(e);
+      var r = n.byteLength;
+      for (var i = 0; i < r; i++) {
+        t += String.fromCharCode(n[i]);
+      }
+      return window.btoa(t);
+    }
+
+    $(document).ready(function () {
+      var socket = io();
+
+      socket.on('connect', () => {
+        //Toggle idicator to show if server online and connected.
+        if (socket.connected) {
+          document.getElementById('serverStatusText').innerHTML =
+            'SERVER ON LINE!';
+          document.getElementById('serverStatusText').style.color = 'green';
+        } else {
+          document.getElementById('serverStatusText').innerHTML =
+            'SERVER OFF LINE!';
+          document.getElementById('serverStatusText').style.color = 'red';
+          $('#img2').attr('src', '/expiredDispatchDisplay.jpg');
+        }
+        console.log(socket.connected); // true
+      });
+
+      socket.on('imageConversionByClient', function (data) {
+        $('#img').attr('src', 'data:image/png;base64,' + b64(data.buffer));
+      });
+
+      socket.on('imageConversionByServer', function (data) {
+        $('#img2').attr('src', data);
+      });
+    });
+  </script>
+</html>
