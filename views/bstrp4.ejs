@@ -1,0 +1,192 @@
+
+<%- include("partials/btstrp4Header"); %>
+
+<header>
+    <div class="collapse bg-dark" id="navbarHeader">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-8 col-md-7 py-4">
+            <h4 class="text-white">About</h4>
+            <p class="text-muted">Add some information about the album below, the author, or any other background context. Make it a few sentences long so folks can pick up some informative tidbits. Then, link them off to some social networking sites or contact information.</p>
+          </div>
+          <div class="col-sm-4 offset-md-1 py-4">
+            <h4 class="text-white">Contact</h4>
+            <ul class="list-unstyled">
+              <li><a href="#" class="text-white">Follow on Twitter</a></li>
+              <li><a href="#" class="text-white">Like on Facebook</a></li>
+              <li><a href="#" class="text-white">Email me</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="navbar navbar-dark bg-dark shadow-sm">
+      <div class="container">
+        <a href="#" class="navbar-brand d-flex align-items-center">
+            <i class="bi bi-server"></i><strong>ATCS SERVER STATUS: <%= serverStatus %></strong>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </div>
+    </div>
+</header>
+  
+<main>
+    
+    <section class="py-5 text-center container">
+      <div class="row py-lg-5">
+        <div class="col-lg-6 col-md-8 mx-auto">
+          <h1 class="fw-light">ATCS Monitor</h1>
+          <!--TODO toggle between manual and auto updating on the servers-->
+          <p class="lead text-muted">You have complete control on updates from the server. Choose if you want to have updates sent automatically or manually. </p>
+          <p>
+            <a href="#" class="btn btn-primary my-2">Auto updates</a>
+            <a href="#" class="btn btn-secondary my-2">Manual update</a>
+          </p>
+        </div>
+      </div>
+    </section>
+  
+    <div class="album py-5 bg-light">
+      <div class="container">
+  
+        <div class="row row-cols-1 row-cols-sm-2  row-cols-md-3 p-3 ">
+
+
+<!-- Begin Displaying Individual Cards-->
+
+          <div class="col d-flex justify-content-center">
+            <div class="card wrapper mb-2" >
+                <!--Image src updated from the display object-->
+                <img src="image.jpg" class="card-img-top" alt="...">
+              <div class="card-body">
+                  <!--Data updated from the display object-->
+                <p class="card-text">CN Waukesha Subdivision Dispatcher Display. </p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                    
+                  </div>
+                  <!--Status updated from the display object-->
+                  <small class="text-muted"><i class="bi bi-server" style="color: green;"></i></small>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+          <div class="col d-flex justify-content-center">
+            <div class="card wrapper mb-2" >
+                <img src="image.jpg" class="card-img-top" alt="...">
+              <div class="card-body .wrapper">
+                <p class="card-text">CP Watertown Subdivision Dispatcher Display.</p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                    
+                  </div>
+                  <small class="text-muted"><i class="bi bi-server" style="color: red;"></i></small>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+
+
+          <div class="col d-flex justify-content-center">
+            <div class="card wrapper mb-2"   >
+                <img src="image.jpg" class="card-img-top" alt="...">
+              <div class="card-body">
+                <p class="card-text">UP Milwaukee Subdivision Dispatcher Display.</p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                    
+                  </div>
+                  <!--TODO update the server status for this particular server-->
+                  <small class="text-muted"><i class="bi bi-server" style="color: red;"></i></small>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <!-- Pass in the display objects from the display array for each ATCS Server-->
+          <!-- 
+            Auto generate dispatcher card with ejs data. Ejs loops thru displays array and for each pulls the following from express server res:
+                    -example-
+                    dispatchDisplayImage: cnDisplay.imageSrc,
+                    dispatchDisplayContent: cnDisplay.description,
+                    ispatchDisplayServerStatus: cnDisplay.serverStatusIconColor()
+          -->
+          <% displays.forEach(function(display){ %>
+            <div class="col d-flex justify-content-center">
+              <div class="card wrapper mb-2"   >
+                  <img src="<%= display.imageSrc %>" class="card-img-top" alt= "...">
+                <div class="card-body h-100">
+                  <p class="card-text"> <%= display.description %></p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                      
+
+                        <!-- display.displayId POST is handled with bodyParser using name=, taking the generated displayId and using it as a route  /displays/:display.displayId-->
+                      <a type="button" class="btn btn-sm btn-outline-secondary "  href="/displays/<%= display.displayId%>" >View</a>
+                    
+                    </div>
+                    <!--TODO update the server status for this particular server-->
+                    <small class="text-muted"><i class="bi bi-server" style="color: <%= display.serverStatusIconColor() %>  "></i></small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+
+         <% }) %>
+         
+  
+          
+          
+          
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  </main>
+
+  
+  <footer class="text-muted py-5">
+    <div class="container">
+      <p class="float-end mb-1">
+        <a href="#">Back to top</a>
+      </p>
+      <p class="mb-1">&copy; 2021 C Stromberg</p>
+      <p class="mb-0">ATCS <a href="/">Visit the WIKI page</a><a href="http://atcswiki-beta.greatlakesnetworking.net/index.php/Main_Page"></a>.</p>
+    </div>
+  </footer>
+  
+  
+
+    
+
+  <%- include("partials/btstrp4Footer"); %>
